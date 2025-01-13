@@ -1,9 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/common/helper/navigation/app_navigtion.dart';
+import 'package:movie_app/common/helper/navigation/message/display_message.dart';
 import 'package:movie_app/core/configs/assets/app_string.dart';
 import 'package:movie_app/core/configs/theme/app_color.dart';
+import 'package:movie_app/data/auth/models/signin_req_params.dart';
+import 'package:movie_app/domain/auth/usecases/signin.dart';
 import 'package:movie_app/presentation/auth/pages/signup_page.dart';
+import 'package:movie_app/presentation/home/pages/home_page.dart';
+import 'package:movie_app/service_locator.dart';
 import 'package:reactive_button/reactive_button.dart';
 
 class SigninPage extends StatelessWidget {
@@ -40,9 +45,18 @@ class SigninPage extends StatelessWidget {
               ReactiveButton(
                   title: AppString.signIn,
                   activeColor: AppColor.primary,
-                  onPressed: () async {},
-                  onSuccess: () {},
-                  onFailure: (error) {}),
+                  onPressed: () async {
+                    await sl<SigninUseCase>().call(
+                        params: SigninReqParams(
+                            email: _emailController.text,
+                            password: _passController.text));
+                  },
+                  onSuccess: () {
+                    AppNavigtion.pushAndRemove(context, HomePage());
+                  },
+                  onFailure: (error) {
+                    DisplayMessage.errorMessage(error, context);
+                  }),
               const SizedBox(height: 10),
               Text.rich(TextSpan(children: [
                 const TextSpan(text: AppString.donHaveAcc),
