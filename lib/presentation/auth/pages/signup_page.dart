@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/common/helper/navigation/app_navigtion.dart';
-import 'package:movie_app/common/helper/navigation/message/display_message.dart';
+import 'package:movie_app/common/helper/message/display_message.dart';
 import 'package:movie_app/core/configs/assets/app_string.dart';
 import 'package:movie_app/core/configs/theme/app_color.dart';
 import 'package:movie_app/data/auth/models/signup_req_params.dart';
