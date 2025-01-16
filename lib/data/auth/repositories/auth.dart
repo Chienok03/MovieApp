@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:movie_app/data/auth/models/signin_req_params.dart';
 
 import 'package:movie_app/data/auth/models/signup_req_params.dart';
-import 'package:movie_app/data/auth/sources/auth_api_service.dart';
+import 'package:movie_app/data/auth/sources/auth_remote_source.dart';
 import 'package:movie_app/domain/auth/repositories/auth.dart';
 import 'package:movie_app/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
