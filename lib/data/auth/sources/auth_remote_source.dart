@@ -1,34 +1,44 @@
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:movie_app/data/auth/models/user_model.dart';
 
 class AuthRemoteSource {
   final FirebaseAuth _firebaseAuth;
 
   AuthRemoteSource(this._firebaseAuth);
 
-  Future<User?> login(String email, String password) async {
+  Future<Either> signin(String email, String password) async {
     try {
-      UserCredential userCredential = await _firebaseAuth
+      final userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
-    } catch (e) {
-      throw Exception(e);
+          final userModel = UserModel.fromFirebaseUser(userCredential.user!);
+      return Right(userModel);
+    } on DioException catch (e) {
+      return Left(e.toString());
     }
   }
 
-  Future<User?> register(String email, String password) async {
+  Future<Either> signup(String email, String password) async {
     try {
-      UserCredential userCredential =
+      final userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user;
-    } catch (e) {
-      throw Exception("Register failed: $e");
+      final userModel = UserModel.fromFirebaseUser(userCredential.user!);
+      return Right(userModel);
+    } on DioException catch (e) {
+      return Left(e.toString());
     }
   }
 
-  Future<void> logout() async {
-    await _firebaseAuth.signOut();
+  Future<Either> logout() async {
+    try {
+      await _firebaseAuth.signOut();
+      return const Right(null);
+    }on DioException catch (e) {
+      return Left(e.toString());
+    }
   }
 }
